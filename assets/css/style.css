@@ -301,7 +301,7 @@ span:nth-of-type(3) {
 
 .side-bar {
     position: fixed;
-    top: 45vh;
+    top: 65vh;
     right: -100px;
     z-index: 4;
 }
@@ -447,7 +447,19 @@ span:nth-of-type(3) {
         font-size:12px;
     }
     .box-go {
-        transform: translateX(204px);
+        transform: translateX(194px);
+    }
+    .side-bar {
+        right: -110px;
+    }
+    #facebook:hover {
+        transform: translateX(-110px)
+    }
+    #whatsapp:hover {
+        transform: translateX(-110px)
+    }
+    #instagram:hover {
+        transform: translateX(-110px)
     }
 }
 
