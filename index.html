@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" rel="stylesheet">
+	<script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
+	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="assets/css/all.css">
+	<title>Covid-19 Visualizer</title>
+</head>
+
+<body>
+
+	<div class="container"><p id="message">Drag to move... Click on countries to view details...</p></div>
+	<label class="ham" for="check">
+		<input type="checkbox" id="check"/> 
+		<span></span>
+		<span></span>
+		<span></span>
+	</label>
+
+	<nav class="navbar navbar-go">
+		<ul>
+			<h2>About Project</h2>
+			<hr class="underline">
+			<li><p class="info">This site is developed to visualize the covid-19 information of specific country.</p></li>
+			<li><div class="key">Data Source: </div><div class="value"><a href="https://www.worldometers.info/coronavirus/" target="_blank">Worldometer</a></div></li>
+			<li><div class="key">Map Source: </div><div class="value"><a href="https://www.mapbox.com/" target="_blank">Map Box</a></div></li>
+			<li><div class="key">Developed By: </div><div class="value">Sarthak Sharma</div></li>
+			<h2 style="margin-top: 20px;">Contact Me</h2>
+			<hr class="underline">
+			<li>
+				<ul class="social-media">
+					<li class="icon-bw">
+						<a href="https://coderss07.github.io/" target="_blank"><i class="fa-xl fa-solid fa-user"></i></a>
+					</li>
+					<li class="icon-bw">
+						<a href="mailto: sarthaksharma0709@gmail.com" target="_blank"><i class="fa-xl fa-solid fa-envelope"></i></a>
+					</li>
+					<li class="icon-bw">
+						<a href="https://www.linkedin.com/in/sarthak-sharma-19b3801a5" target="_blank"><i class="fa-xl fa-brands fa-linkedin"></i></a>
+					</li>
+					<li class="icon-bw">
+						<a href="https://github.com/coderss07" target="_blank"><i class="fa-xl fa-brands fa-github"></i></a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+
+	<nav class="box box-go">
+		<div class="icon-box">
+			<input type="checkbox" id="check-2"/>
+			<i id="icon" class="fa-solid fa-circle-arrow-left"></i>
+		</div>
+		<h2>TOTAL COUNTS</h2>
+		<hr class="underline">
+		<ul id="tot-data"></ul>
+	</nav>
+
+	<div class="side-bar">
+		<div id="facebook" class="side-content"><a href="https://m.facebook.com/100010945263860/" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></div>
+		<div id="whatsapp" class="side-content"><a href="https://wa.link/yuored" target="_blank"><i class="fa-brands fa-whatsapp"></i> Whatsapp</a></div>
+		<div id="instagram" class="side-content"><a href="https://www.instagram.com/sarthu___07/" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a></div>
+	</div>
+
+	<div id='map'></div>
+
+	<script>
+		mapboxgl.accessToken = 'pk.eyJ1Ijoic2FydGh1ODU4IiwiYSI6ImNreW10eTJmNTNqa20yb24wZXd4MnYzbHoifQ.5gej7P5ReG0ic0XuohrUOQ';
+		var map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/sarthu858/cl54ztzkl00ar14ogpi6210vu',
+			zoom: 1.7,
+			center: [78.6301, 30.35625],
+			projection: 'globe'
+		});
+		var mq1 = window.matchMedia( "(min-width: 760px)" );
+		var mq2 = window.matchMedia( "(min-width: 420px)" );
+
+		if (mq1.matches){
+			map.setZoom(1.7); //set map zoom level for desktop size
+		} else if (mq2.matches){
+			map.setZoom(1.0); //set map zoom level for desktop size
+		} else {
+			map.setZoom(0.7); //set map zoom level for mobile size
+		};
+	</script>
+
+</body>
+<script src="assets/js/index.js"></script>
+
+</html>
