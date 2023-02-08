@@ -1,56 +1,68 @@
 var countryElement = {};
 
 function updateMap() {
-    fetch("https://disease.sh/v3/covid-19/countries?strict=true").then(res => res.json()).then((resp) => {
-        var tot_cases = 0;
-        var tot_active = 0;
-        var tot_deaths = 0;
-        var tot_recovers = 0;
-        resp.forEach(data => {
-            tot_cases += data.cases;
-            tot_active += data.active;
-            tot_deaths += data.deaths;
-            tot_recovers += data.recovered;
-            
-            var cdt = new Date();
-            var offset = parseInt((cdt.getTime() - data.updated) / (60000));
-            // var dt = new Date(data.updated);
-            // console.log(cdt.getMinutes())
-            var ele = `<div class="location">
-            <div class="flag"><img src="${data.countryInfo.flag}"></div>
-                            <h2>${data.country}</h2>
-                            <hr class="underline">
-                            <div class="content"><h4>Confirmed: </h4> <div class="counts">${data.cases.toLocaleString('en-US')} </div> </div>`
-            if(data.todayCases > 0) {
-                ele += `<div class="sub-cases"><strong class="new-cases"> +${data.todayCases.toLocaleString('en-US')} </strong><span class="time">(updated ${offset} min ago)</span></div>`;
-            }
-                            
-            ele += `<div class="content"><h4>Active:</h4> <div class="counts">${data.active.toLocaleString('en-US')}</div> </div>
-                    <div class="content"><h4>Deaths:</h4> <div class="counts">${data.deaths.toLocaleString('en-US')}</div> </div>`;
-            if(data.todayDeaths > 0) {
-                ele += `<div class="sub-cases"><strong class="new-cases"> +${data.todayDeaths.toLocaleString('en-US')} </strong><span class="time">(updated ${offset} min ago)</span></div>`;
-            }                       
-            ele += `<div class="content"><h4>Recovered:</h4> <div class="counts">${data.recovered.toLocaleString('en-US')}</div> </div>`;       
-            if(data.todayRecovered > 0) {
-                ele += `<div class="sub-cases"><strong class="new-cases"> +${data.todayRecovered.toLocaleString('en-US')} </strong><span class="time">(updated ${offset} min ago)</span></div>`;
-            }         
-            ele += `</div>`;
+    fetch("https://disease.sh/v3/covid-19/countries?strict=true")
+        .then(res => res.json())
+        .then((resp) => {
+            var tot_cases = 0;
+            var tot_active = 0;
+            var tot_deaths = 0;
+            var tot_recovers = 0;
+            resp.forEach(data => {
+                tot_cases += data.cases;
+                tot_active += data.active;
+                tot_deaths += data.deaths;
+                tot_recovers += data.recovered;
+                
+                var cdt = new Date();
+                var offset = parseInt((cdt.getTime() - data.updated) / (60000));
+                // var dt = new Date(data.updated);
+                // console.log(cdt.getMinutes())
+                var ele = `<div class="location">
+                <div class="flag"><img src="${data.countryInfo.flag}"></div>
+                                <h2>${data.country}</h2>
+                                <hr class="underline">
+                                <div class="content"><h4>Confirmed: </h4> <div class="counts">${data.cases.toLocaleString('en-US')} </div> </div>`
+                if(data.todayCases > 0) {
+                    ele += `<div class="sub-cases"><strong class="new-cases"> +${data.todayCases.toLocaleString('en-US')} </strong><span class="time">(updated ${offset} min ago)</span></div>`;
+                }
+                                
+                ele += `<div class="content"><h4>Active:</h4> <div class="counts">${data.active.toLocaleString('en-US')}</div> </div>
+                        <div class="content"><h4>Deaths:</h4> <div class="counts">${data.deaths.toLocaleString('en-US')}</div> </div>`;
+                if(data.todayDeaths > 0) {
+                    ele += `<div class="sub-cases"><strong class="new-cases"> +${data.todayDeaths.toLocaleString('en-US')} </strong><span class="time">(updated ${offset} min ago)</span></div>`;
+                }                       
+                ele += `<div class="content"><h4>Recovered:</h4> <div class="counts">${data.recovered.toLocaleString('en-US')}</div> </div>`;       
+                if(data.todayRecovered > 0) {
+                    ele += `<div class="sub-cases"><strong class="new-cases"> +${data.todayRecovered.toLocaleString('en-US')} </strong><span class="time">(updated ${offset} min ago)</span></div>`;
+                }         
+                ele += `</div>`;
 
-            countryElement[data.countryInfo.iso2] = ele;
-        });
-        
-        document.querySelector('#tot-data').innerHTML = `
-            <li><div class="type">CASES: </div><div class="val">${tot_cases.toLocaleString('en-US')}</div></li>
-            <li><div class="type">ACTIVE: </div><div class="val">${tot_active.toLocaleString('en-US')}</div></li>
-            <li><div class="type">DEATHS: </div><div class="val">${tot_deaths.toLocaleString('en-US')}</div></li>
-            <li><div class="type">RECOVERIES: </div><div class="val">${tot_recovers.toLocaleString('en-US')}</div></li>`;
-    })
+                countryElement[data.countryInfo.iso2] = ele;
+            });
+            
+            document.querySelector('#tot-data').innerHTML = `
+                <li><div class="type">CASES: </div><div class="val">${tot_cases.toLocaleString('en-US')}</div></li>
+                <li><div class="type">ACTIVE: </div><div class="val">${tot_active.toLocaleString('en-US')}</div></li>
+                <li><div class="type">DEATHS: </div><div class="val">${tot_deaths.toLocaleString('en-US')}</div></li>
+                <li><div class="type">RECOVERIES: </div><div class="val">${tot_recovers.toLocaleString('en-US')}</div></li>`;
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 
 }
 
 updateMap()
 
 map.on('load', () => {
+    loadMap()
+    .then(() => {
+        document.querySelector('.loader').style.display = 'none'
+    })
+})
+
+async function loadMap() {
     map.setFog({
         'horizon-blend': 0.03,
         'color': '#dadada',
@@ -131,8 +143,7 @@ map.on('load', () => {
         map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
     });
 
-});
-
+}
 
 document.querySelector('.ham').addEventListener("click", () => {
     var obj = document.querySelector('#check');
